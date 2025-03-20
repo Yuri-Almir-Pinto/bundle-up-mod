@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "bundle-up",
+	"version": "${version}",
+	"name": "Bundle Up",
+	"description": "Turn the bundle from an item into a mechanic, and actually (try) to solve the inventory problem.",
+	"authors": [
+		"Yipeekiyaay"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": "https://github.com/Yuri-Almir-Pinto/bundle-up-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/bundle-up/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.yipeekiyaay.BundleUp"
+		],
+		"client": [
+			"com.yipeekiyaay.BundleUpClient"
+		],
+		"fabric-datagen": [
+			"com.yipeekiyaay.BundleUpDataGenerator"
+		]
+	},
+	"mixins": [
+		"bundle-up.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+	}
+}
