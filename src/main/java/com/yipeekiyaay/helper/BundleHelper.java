@@ -1,7 +1,9 @@
 package com.yipeekiyaay.helper;
 
+import com.yipeekiyaay.BundleUp;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,6 +26,10 @@ public class BundleHelper {
         BundleContentsComponent.Builder builder = new BundleContentsComponent.Builder(bundleContents);
         builder.add(stack);
         bundleStack.set(DataComponentTypes.BUNDLE_CONTENTS, builder.build());
+
+        bundleStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
+            currentNbt.putBoolean(BundleUp.FRAGILE_BUNDLE_NBT, true);
+        }));
 
         screenHandler.setCursorStack(bundleStack);
 

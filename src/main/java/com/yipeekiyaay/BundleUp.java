@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class BundleUp implements ModInitializer {
 	public static final String MOD_ID = "bundle-up";
+	public static final String FRAGILE_BUNDLE_NBT = "bundle-up-fragile-bundle";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 

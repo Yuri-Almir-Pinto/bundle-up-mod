@@ -1,6 +1,8 @@
 package com.yipeekiyaay.mixin;
 
+import com.yipeekiyaay.BundleUp;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.StackReference;
@@ -54,8 +56,12 @@ public class BundleMixins {
 
 		if (bundleContents == null) return;
 
-		if (bundleContents.isEmpty()) {
-			stack.setCount(0);
-		}
+		stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
+			var isFragile = currentNbt.getBoolean(BundleUp.FRAGILE_BUNDLE_NBT);
+
+			if (isFragile && bundleContents.isEmpty()) {
+				stack.setCount(0);
+			}
+		}));
 	}
 }
