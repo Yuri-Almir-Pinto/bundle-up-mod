@@ -13,8 +13,7 @@ public class BundleHelper {
         var screenHandler = player.currentScreenHandler;
         var stack = screenHandler.getCursorStack();
 
-        if (stack.isEmpty()) return false;
-        if (!BundleContentsComponent.canBeBundled(stack)) return false;
+        if (!canBeBundled(stack)) return false;
         if (stack.getMaxCount() == 1) return false;
 
         var bundleStack = new ItemStack(Items.BUNDLE, 1);
@@ -34,6 +33,10 @@ public class BundleHelper {
         screenHandler.setCursorStack(bundleStack);
 
         return true;
+    }
+
+    public static boolean canBeBundled(ItemStack stack) {
+        return !stack.isEmpty() && stack.getItem().canBeNested();
     }
 
     public static boolean isCreativeScreen(PlayerEntity player) {
