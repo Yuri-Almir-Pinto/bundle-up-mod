@@ -39,7 +39,7 @@ public class BundleHelper {
         return !stack.isEmpty() && stack.getItem().canBeNested();
     }
 
-    public static boolean isCreativeScreen(PlayerEntity player) {
+    public static boolean shouldSendToClient(PlayerEntity player) {
         var currentScreen = player.currentScreenHandler;
 
         return player.isCreative()

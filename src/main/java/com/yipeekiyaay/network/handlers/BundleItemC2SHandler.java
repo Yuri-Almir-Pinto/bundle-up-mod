@@ -11,7 +11,7 @@ public class BundleItemC2SHandler {
     public static void handle(BundleItemC2SPayload payload, ServerPlayNetworking.Context context) {
         var player = context.player();
 
-        if (BundleHelper.isCreativeScreen(player)) {
+        if (BundleHelper.shouldSendToClient(player)) {
             var responseSender = context.responseSender();
             responseSender.sendPacket(new BundleItemS2CPayload());
             return;

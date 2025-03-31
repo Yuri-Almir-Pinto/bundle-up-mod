@@ -57,7 +57,7 @@ public class BundleMixins {
 		if (bundleContents == null) return;
 
 		stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
-			var isFragile = currentNbt.getBoolean(BundleUp.FRAGILE_BUNDLE_NBT);
+			var isFragile = currentNbt.contains(BundleUp.FRAGILE_BUNDLE_NBT);
 
 			if (isFragile && bundleContents.isEmpty()) {
 				stack.setCount(0);
