@@ -42,7 +42,7 @@ public class BundleHelper {
     public static boolean shouldSendToClient(PlayerEntity player) {
         var currentScreen = player.currentScreenHandler;
 
-        return player.isCreative()
+        return player.isInCreativeMode()
                 && currentScreen.getCursorStack().isEmpty();
     }
 }
