@@ -1,35 +1,44 @@
 package com.example.bundle_up.domain;
 
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.BundleContents;
-import net.minecraft.world.item.component.CustomData;
 
 public class Utilities {
+
+    // NBT Keys
+    private static final String TAG_ITEMS = "Items";
+    private static final String TAG_MARKER = "bundle_up_marker";
+
     public static boolean markSpecialBundle(ItemStack stack) {
         if (stack.getItem() != Items.BUNDLE) return false;
 
-        stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing ->
-            existing.update(tag -> tag.putBoolean("bundle_up_marker", true))
-        );
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putBoolean(TAG_MARKER, true);
 
         return true;
     }
 
     public static boolean isSpecialBundle(ItemStack stack) {
         if (stack.getItem() != Items.BUNDLE) return false;
+        if (!stack.hasTag()) return false;
 
-        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-        return data != null && data.contains("bundle_up_marker");
+        return stack.getTag() != null && stack.getTag().contains(TAG_MARKER);
     }
 
     public static boolean isBundleEmpty(ItemStack stack) {
         if (stack.getItem() != Items.BUNDLE) throw new RuntimeException("Tried to check if a non-bundle item was empty!");
+        if (!stack.hasTag()) return true;
 
-        var contents = stack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
+        CompoundTag tag = stack.getTag();
 
-        return contents.isEmpty();
+        if (tag == null) return true;
+        if (!tag.contains(TAG_ITEMS)) return true;
+
+        return tag.getList(TAG_ITEMS, Tag.TAG_COMPOUND).isEmpty();
     }
 
     public static void emptyIfSpecialBundle(ItemStack bundle) {
@@ -39,15 +48,21 @@ public class Utilities {
     }
 
     public static ItemStack bundleStack(ItemStack stack) {
-        var bundle = Items.BUNDLE.getDefaultInstance();
+        ItemStack bundle = new ItemStack(Items.BUNDLE);
 
-        BundleContents contents = bundle.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);
+        if (!stack.getItem().canFitInsideContainerItems()) {
+            return bundle;
+        }
 
-        BundleContents.Mutable mutable = new BundleContents.Mutable(contents);
+        CompoundTag bundleTag = bundle.getOrCreateTag();
 
-        mutable.tryInsert(stack);
+        ListTag itemsList = new ListTag();
 
-        bundle.set(DataComponents.BUNDLE_CONTENTS, mutable.toImmutable());
+        itemsList.add(stack.save(new CompoundTag()));
+
+        bundleTag.put(TAG_ITEMS, itemsList);
+
+        stack.setCount(0);
 
         return bundle;
     }

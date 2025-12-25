@@ -8,8 +8,10 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.FriendlyByteBuf;
 
 public class BundleUpFabricClient implements ClientModInitializer {
     public static final KeyMapping BUNDLE_UP_KEY = new KeyMapping(
@@ -32,7 +34,7 @@ public class BundleUpFabricClient implements ClientModInitializer {
 
                 if (!sendPacket) return;
 
-                ClientPlayNetworking.send(new BundleC2SPayload());
+                ClientPlayNetworking.send(BundleC2SPayload.ID, new FriendlyByteBuf(PacketByteBufs.create()));
             });
         });
     }
