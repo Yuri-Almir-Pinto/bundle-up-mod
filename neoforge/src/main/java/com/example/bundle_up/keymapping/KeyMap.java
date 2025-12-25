@@ -8,7 +8,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
 
-@EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
 public class KeyMap {
     public static final Lazy<KeyMapping> BUNDLE_UP = Lazy.of(() -> toKeyMapping(KeyMapCommon.BUNDLE_UP));
 

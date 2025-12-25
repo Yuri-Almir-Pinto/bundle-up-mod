@@ -9,11 +9,10 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Constants.MOD_ID)
 public class NetworkHandler {
-    @SubscribeEvent // on the mod event bus
+    @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
-        // Sets the current network version
         final PayloadRegistrar registrar = event.registrar("1");
         registrar.commonToServer(
                 BundleC2SPayload.TYPE,
