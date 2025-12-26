@@ -32,6 +32,12 @@ public class Utilities {
         return contents.isEmpty();
     }
 
+    public static void emptyIfSpecialBundle(ItemStack bundle) {
+        if (!Utilities.isBundleEmpty(bundle) || !Utilities.isSpecialBundle(bundle)) return;
+
+        bundle.setCount(0);
+    }
+
     public static ItemStack bundleStack(ItemStack stack) {
         var bundle = Items.BUNDLE.getDefaultInstance();
 
