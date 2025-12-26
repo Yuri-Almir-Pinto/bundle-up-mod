@@ -1,7 +1,6 @@
 package com.example.bundle_up.mixin;
 
 import com.example.bundle_up.domain.Utilities;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.SlotAccess;
