@@ -1,24 +1,33 @@
 package com.example.bundle_up.mixin;
 
 import com.example.bundle_up.domain.Utilities;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
+    @Shadow
+    public abstract net.minecraft.world.item.Item getItem();
+    @Shadow
+    public abstract void setCount(int count);
 
-    @Inject(method = "inventoryTick", at = @At("HEAD"))
-    private void onInventoryTick(Level level, Entity entity, int slotId, boolean isSelected, CallbackInfo ci) {
+    @Inject(method = "set", at = @At("RETURN"))
+    private void onSetComponent(DataComponentType<?> component, @Nullable Object value, CallbackInfoReturnable<Object> cir) {
+        if (this.getItem() != Items.BUNDLE) return;
+        if (component != DataComponents.BUNDLE_CONTENTS) return;
+
         ItemStack self = (ItemStack) (Object) this;
 
-        if (self.getItem() != Items.BUNDLE) return;
-
-        Utilities.emptyIfSpecialBundle(self);
+        if (Utilities.isSpecialBundle(self) && Utilities.isBundleEmpty(self)) {
+            this.setCount(0);
+        }
     }
 }
